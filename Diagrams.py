@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Data from CSV file
-df = pd.read_csv('/Users/ozcankaraca/Desktop/Testresults/Allresults.csv', sep=";")
+df = pd.read_csv('/Users/ozcankaraca/Desktop/Testresults/Newresults.csv', sep=";")
 
 df.columns = df.columns.str.strip()
 del df["TestID"]
@@ -144,143 +144,7 @@ plt.show()
 
 
 #------------------------------------------------------------------------------------------------------------------
-# 5 - Error rate for data transfer time with an increasing number of peers (with P2P) for a specific file size.
-
-df['P2P Algorithm'] = df['P2P Algorithm'].astype(str)
-
-df_filtered = df[(df['P2P Algorithm'].str.upper() == 'USED') & (df['Total Received Bytes'] == 67108864)]
-
-grouped_data = df_filtered.groupby('Number of Peers')[['Maximum Transfer Time Error Rate [%]', 
-                                                       'Minimum Transfer Time Error Rate [%]', 
-                                                       'Average Transfer Time Error Rate [%]']].mean().reset_index()
-
-plt.figure(figsize=(10, 6), dpi=300)
-
-plt.plot(grouped_data['Number of Peers'], grouped_data['Maximum Transfer Time Error Rate [%]'],
-         label='Maximum', marker='o', linestyle='-', linewidth=2)
-plt.plot(grouped_data['Number of Peers'], grouped_data['Minimum Transfer Time Error Rate [%]'],
-         label='Minimum', marker='s', linestyle='-', linewidth=2)
-plt.plot(grouped_data['Number of Peers'], grouped_data['Average Transfer Time Error Rate [%]'],
-         label='Average', marker='^', linestyle='-', linewidth=2)
-
-plt.xlabel('Number of Peers', fontsize=20)
-plt.ylabel('Transfer Time Error Rate [%]', fontsize=20)
-plt.xticks(fontsize=16)
-plt.yticks(fontsize=16) 
-
-plt.legend(fontsize=18)
-plt.grid(True, which='both', linestyle='--', linewidth=0.5)
-plt.tight_layout()
-plt.savefig('transfer_error_rate_increasing_peers_with_p2p.png', format='png', dpi=300)
-plt.show()
-
-#------------------------------------------------------------------------------------------------------------------
-
-
-#------------------------------------------------------------------------------------------------------------------
-# 6 - Error rate for data transfer time with an increasing number of peers (without P2P) for a specific file size.
-
-df['P2P Algorithm'] = df['P2P Algorithm'].astype(str)
-
-df_filtered = df[(df['P2P Algorithm'].str.upper() == 'NOT USED') & (df['Total Received Bytes'] == 67108864)]
-
-grouped_data = df_filtered.groupby('Number of Peers')[['Maximum Transfer Time Error Rate [%]', 
-                                                       'Minimum Transfer Time Error Rate [%]', 
-                                                       'Average Transfer Time Error Rate [%]']].mean().reset_index()
-
-plt.figure(figsize=(10, 6), dpi=300)
-
-plt.plot(grouped_data['Number of Peers'], grouped_data['Maximum Transfer Time Error Rate [%]'],
-         label='Maximum', marker='o', linestyle='-', linewidth=2)
-plt.plot(grouped_data['Number of Peers'], grouped_data['Minimum Transfer Time Error Rate [%]'],
-         label='Minimum', marker='s', linestyle='-', linewidth=2)
-plt.plot(grouped_data['Number of Peers'], grouped_data['Average Transfer Time Error Rate [%]'],
-         label='Average', marker='^', linestyle='-', linewidth=2)
-
-plt.xlabel('Number of Peers', fontsize=20)
-plt.ylabel('Transfer Time Error Rate [%]', fontsize=20)
-plt.xticks(fontsize=16)
-plt.yticks(fontsize=16) 
-
-plt.legend(fontsize=18)
-plt.grid(True, which='both', linestyle='--', linewidth=0.5)
-plt.tight_layout()
-plt.savefig('transfer_error_rate_increasing_peers_without_p2p.png', format='png', dpi=300)
-plt.show()
-
-#------------------------------------------------------------------------------------------------------------------
-
-
-#------------------------------------------------------------------------------------------------------------------
-# 7 - Error rate for data transfer time with an increasing size of file (with P2P) for a specific number of peers.
-
-df['P2P Algorithm'] = df['P2P Algorithm'].astype(str)
-
-df_filtered = df[(df['P2P Algorithm'].str.upper() == 'USED') & (df['Number of Peers'] == 5)]
-
-grouped_data = df_filtered.groupby('Total Received Bytes')[['Maximum Transfer Time Error Rate [%]', 
-                                                            'Minimum Transfer Time Error Rate [%]', 
-                                                            'Average Transfer Time Error Rate [%]']].mean().reset_index()
-
-plt.figure(figsize=(10, 6), dpi=300)
-
-plt.plot(grouped_data['Total Received Bytes'], grouped_data['Maximum Transfer Time Error Rate [%]'],
-         label='Maximum', marker='o', linestyle='-', linewidth=2)
-plt.plot(grouped_data['Total Received Bytes'], grouped_data['Minimum Transfer Time Error Rate [%]'],
-         label='Minimum', marker='s', linestyle='-', linewidth=2)
-plt.plot(grouped_data['Total Received Bytes'], grouped_data['Average Transfer Time Error Rate [%]'],
-         label='Average', marker='^', linestyle='-', linewidth=2)
-
-plt.xlabel('File Size (Total Received Bytes)', fontsize=20)
-plt.ylabel('Transfer Time Error Rate [%]', fontsize=20)
-plt.xticks(fontsize=16)
-plt.yticks(fontsize=16) 
-
-plt.legend(fontsize=18)
-plt.grid(True, which='both', linestyle='--', linewidth=0.5)
-plt.tight_layout()
-plt.savefig('transfer_error_rate_increasing_size_file_with_p2p.png', format='png', dpi=300)
-plt.show()
-
-#------------------------------------------------------------------------------------------------------------------
-
-
-#------------------------------------------------------------------------------------------------------------------
-# 8 - Error rate for data transfer time with an increasing size of file (without P2P) for a specific number of peers.
-
-df['P2P Algorithm'] = df['P2P Algorithm'].astype(str)
-
-df_filtered = df[(df['P2P Algorithm'].str.upper() == 'NOT USED') & (df['Number of Peers'] == 5)]
-
-grouped_data = df_filtered.groupby('Total Received Bytes')[['Maximum Transfer Time Error Rate [%]', 
-                                                            'Minimum Transfer Time Error Rate [%]', 
-                                                            'Average Transfer Time Error Rate [%]']].mean().reset_index()
-
-plt.figure(figsize=(10, 6), dpi=300)
-
-plt.plot(grouped_data['Total Received Bytes'], grouped_data['Maximum Transfer Time Error Rate [%]'],
-         label='Maximum', marker='o', linestyle='-', linewidth=2)
-plt.plot(grouped_data['Total Received Bytes'], grouped_data['Minimum Transfer Time Error Rate [%]'],
-         label='Minimum', marker='s', linestyle='-', linewidth=2)
-plt.plot(grouped_data['Total Received Bytes'], grouped_data['Average Transfer Time Error Rate [%]'],
-         label='Average', marker='^', linestyle='-', linewidth=2)
-
-plt.xlabel('File Size (Total Received Bytes)', fontsize=20)
-plt.ylabel('Transfer Time Error Rate [%]', fontsize=20)
-plt.xticks(fontsize=16)
-plt.yticks(fontsize=16) 
-
-plt.legend(fontsize=18)
-plt.grid(True, which='both', linestyle='--', linewidth=0.5)
-plt.tight_layout()
-plt.savefig('transfer_error_rate_increasing_size_file_without_p2p.png', format='png', dpi=300)
-plt.show()
-
-#------------------------------------------------------------------------------------------------------------------
-
-
-#------------------------------------------------------------------------------------------------------------------
-# 9 - Connection time for a connection between two container with an increasing number of peers (with P2P) for a specific file size.
+# 5 - Connection time for a connection between two container with an increasing number of peers (with P2P) for a specific file size.
 
 df['P2P Algorithm'] = df['P2P Algorithm'].astype(str)
 
@@ -314,7 +178,7 @@ plt.show()
 
 
 #------------------------------------------------------------------------------------------------------------------
-# 10 - Connection time for a connection between two container with an increasing number of peers (without P2P) for a specific file size.
+# 6 - Connection time for a connection between two container with an increasing number of peers (without P2P) for a specific file size.
 
 df['P2P Algorithm'] = df['P2P Algorithm'].astype(str)
 
@@ -348,7 +212,7 @@ plt.show()
 
 
 #------------------------------------------------------------------------------------------------------------------
-# 11 - Transfer time of two container with an increasing number of peers (with P2P) for a specific file size.
+# 7 - Transfer time of two container with an increasing number of peers (with P2P) for a specific file size.
 
 df['P2P Algorithm'] = df['P2P Algorithm'].astype(str)
 
@@ -382,7 +246,7 @@ plt.show()
 
 
 #------------------------------------------------------------------------------------------------------------------
-# 12 - Transfer time of two container with an increasing number of peers (without P2P) for a specific file size.
+# 8 - Transfer time of two container with an increasing number of peers (without P2P) for a specific file size.
 
 df['P2P Algorithm'] = df['P2P Algorithm'].astype(str)
 
@@ -416,7 +280,7 @@ plt.show()
 
 
 #------------------------------------------------------------------------------------------------------------------
-# 13 - Total time of two container with an increasing number of peers (with P2P) for a specific file size.
+# 9 - Total time of two container with an increasing number of peers (with P2P) for a specific file size.
 
 df['P2P Algorithm'] = df['P2P Algorithm'].astype(str)
 
@@ -450,7 +314,7 @@ plt.show()
 
 
 #------------------------------------------------------------------------------------------------------------------
-# 14 - Total time of two container with an increasing number of peers (without P2P) for a specific file size.
+# 10 - Total time of two container with an increasing number of peers (without P2P) for a specific file size.
 
 df['P2P Algorithm'] = df['P2P Algorithm'].astype(str)
 
@@ -484,7 +348,7 @@ plt.show()
 
 
 #------------------------------------------------------------------------------------------------------------------
-# 15 - Total duration of the whole process with 20 peers and an increasing size of file with and without P2P
+# 11 - Total duration of the whole process with 20 peers and an increasing size of file with and without P2P
 
 df['P2P Algorithm'] = df['P2P Algorithm'].astype(str)
 
@@ -518,7 +382,7 @@ plt.show()
 
 
 #------------------------------------------------------------------------------------------------------------------
-# 16 - Total duration of the whole process with 35 peers and an increasing size of file with and without P2P
+# 12 - Total duration of the whole process with 35 peers and an increasing size of file with and without P2P
 
 df['P2P Algorithm'] = df['P2P Algorithm'].astype(str)
 
@@ -552,7 +416,7 @@ plt.show()
 
 
 #------------------------------------------------------------------------------------------------------------------
-# 17 - Total duration of the whole process with 50 peers and an increasing size of file with and without P2P
+# 13 - Total duration of the whole process with 50 peers and an increasing size of file with and without P2P
 
 df['P2P Algorithm'] = df['P2P Algorithm'].astype(str)
 
@@ -586,7 +450,7 @@ plt.show()
 
 
 #------------------------------------------------------------------------------------------------------------------
-# 18 - Total duration of the whole process with 75 peers and an increasing size of file with and without P2P
+# 14 - Total duration of the whole process with 75 peers and an increasing size of file with and without P2P
 
 df['P2P Algorithm'] = df['P2P Algorithm'].astype(str)
 
@@ -617,3 +481,28 @@ plt.savefig('total_duration_with_75_peers_with_and_without_p2p.png', format='png
 plt.show()
 
 #------------------------------------------------------------------------------------------------------------------
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Containerlab Deploying with increasing number of peers
+data = {
+    "Number of Peers": [5, 10, 20, 35, 50, 75],
+    "Total Duration of Containerlab Deploying[s]": [37, 64, 118, 198, 279, 413]
+}
+
+# Create a DataFrame
+df = pd.DataFrame(data)
+
+# Plotting the data
+plt.figure(figsize=(12, 7), dpi=300)
+
+plt.plot(df['Number of Peers'], df['Total Duration of Containerlab Deploying[s]'], marker='o', linestyle='-', color='blue', linewidth=2)
+plt.title('Total Duration of Containerlab Deploying by Number of Peers')
+plt.xlabel('Number of Peers')
+plt.ylabel('Total Duration of Containerlab Deploying [s]')
+
+plt.xticks(fontsize=16)
+plt.yticks(fontsize=16) 
+
+plt.grid(True)
+plt.show()
