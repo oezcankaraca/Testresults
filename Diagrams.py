@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Data from CSV file
-df = pd.read_csv('/Users/ozcankaraca/Desktop/Testresults/Newresults.csv', sep=";")
+df = pd.read_csv('/Users/ozcankaraca/Desktop/Testresults/Allresults.csv', sep=";")
 
 df.columns = df.columns.str.strip()
 del df["TestID"]
@@ -216,7 +216,7 @@ plt.show()
 
 df['P2P Algorithm'] = df['P2P Algorithm'].astype(str)
 
-df_filtered = df[(df['P2P Algorithm'].str.upper() == 'USED') & (df['Total Received Bytes'] == 2239815)]
+df_filtered = df[(df['P2P Algorithm'].str.upper() == 'USED') & (df['Total Received Bytes'] == 15890720)]
 
 grouped_data = df_filtered.groupby('Number of Peers')[['Maximum Transfer Time [s]', 
                                                        'Minimum Transfer Time [s]', 
@@ -250,7 +250,7 @@ plt.show()
 
 df['P2P Algorithm'] = df['P2P Algorithm'].astype(str)
 
-df_filtered = df[(df['P2P Algorithm'].str.upper() == 'NOT USED') & (df['Total Received Bytes'] == 2239815)]
+df_filtered = df[(df['P2P Algorithm'].str.upper() == 'NOT USED') & (df['Total Received Bytes'] == 15890720)]
 
 grouped_data = df_filtered.groupby('Number of Peers')[['Maximum Transfer Time [s]', 
                                                        'Minimum Transfer Time [s]', 
@@ -284,7 +284,7 @@ plt.show()
 
 df['P2P Algorithm'] = df['P2P Algorithm'].astype(str)
 
-df_filtered = df[(df['P2P Algorithm'].str.upper() == 'USED') & (df['Total Received Bytes'] == 2239815)]
+df_filtered = df[(df['P2P Algorithm'].str.upper() == 'USED') & (df['Total Received Bytes'] == 15890720)]
 
 grouped_data = df_filtered.groupby('Number of Peers')[['Maximum Total Time [s]', 
                                                        'Minimum Total Time [s]', 
@@ -318,7 +318,7 @@ plt.show()
 
 df['P2P Algorithm'] = df['P2P Algorithm'].astype(str)
 
-df_filtered = df[(df['P2P Algorithm'].str.upper() == 'NOT USED') & (df['Total Received Bytes'] == 2239815)]
+df_filtered = df[(df['P2P Algorithm'].str.upper() == 'NOT USED') & (df['Total Received Bytes'] == 15890720)]
 
 grouped_data = df_filtered.groupby('Number of Peers')[['Maximum Total Time [s]', 
                                                        'Minimum Total Time [s]', 
@@ -481,13 +481,15 @@ plt.savefig('total_duration_with_75_peers_with_and_without_p2p.png', format='png
 plt.show()
 
 #------------------------------------------------------------------------------------------------------------------
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Containerlab Deploying with increasing number of peers
+# Containerlab deploying and destroying with increasing number of peers
 data = {
     "Number of Peers": [5, 10, 20, 35, 50, 75],
-    "Total Duration of Containerlab Deploying[s]": [37, 64, 118, 198, 279, 413]
+    "Total Duration of Containerlab Deploying[s]": [37, 64, 118, 198, 279, 413],
+    "Total Duration of Containerlab Destroying[s]": [1, 2, 3, 5, 6, 9]
 }
 
 # Create a DataFrame
@@ -496,13 +498,62 @@ df = pd.DataFrame(data)
 # Plotting the data
 plt.figure(figsize=(12, 7), dpi=300)
 
-plt.plot(df['Number of Peers'], df['Total Duration of Containerlab Deploying[s]'], marker='o', linestyle='-', color='blue', linewidth=2)
-plt.title('Total Duration of Containerlab Deploying by Number of Peers')
+plt.plot(df['Number of Peers'], df['Total Duration of Containerlab Deploying[s]'], label="Deploying of Containerlab [s]", marker='o', linestyle='-', color='blue', linewidth=2)
+plt.plot(df['Number of Peers'], df['Total Duration of Containerlab Destroying[s]'],label="Destroying of Containerlab [s]", marker='o', linestyle='-', color='orange', linewidth=2)
+
 plt.xlabel('Number of Peers')
 plt.ylabel('Total Duration of Containerlab Deploying [s]')
 
 plt.xticks(fontsize=16)
 plt.yticks(fontsize=16) 
 
+plt.legend()
+plt.grid(True)
+plt.show()
+
+#------------------------------------------------------------------------------------------------------------------
+import numpy as np
+
+# Define the provided data points for number of peers and the corresponding times for deploying and destroying Containerlab
+number_of_peers = np.array([5, 10, 20, 35, 50, 75])
+deploying_times = np.array([37, 64, 118, 198, 279, 413])
+
+slope, intercept = np.polyfit(number_of_peers, deploying_times, 1)
+
+def calculate_time(number_of_peers, slope, intercept):
+    return slope * number_of_peers + intercept
+
+time_per_peer = calculate_time(1, slope, intercept)
+
+slope, time_per_peer
+
+#------------------------------------------------------------------------------------------------------------------
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# CPU and Memory usage with increasing number of peers
+data = {
+    "Number of Peers": [5, 10, 20, 35, 50, 75],
+    "Total Average CPU Usage (%)": [4.73, 7.30, 12.59, 16.12, 24.89, 37.61],
+    "Total Average Memory Usage (%)": [5.61, 9.23, 15.66, 31.25, 34.35, 46.44]
+}
+
+# DataFrame erstellen
+df = pd.DataFrame(data)
+
+# Plotting the data
+plt.figure(figsize=(12, 7), dpi=300)
+
+plt.plot(df["Number of Peers"], df["Total Average CPU Usage (%)"], label="CPU Usage (%)", marker='o', color='blue')
+plt.plot(df["Number of Peers"], df["Total Average Memory Usage (%)"], label="Memory Usage (%)", marker='o', color='green')
+
+plt.xlabel("Number of Peers")
+plt.ylabel("Usage (%)")
+
+plt.xticks(fontsize=16)
+plt.yticks(fontsize=16) 
+
+plt.legend()
 plt.grid(True)
 plt.show()
